@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — Spendly{% endblock %}
+
+{% block content %}
+<div class="terms-container" style="max-width: 800px; margin: 0 auto; padding: 2rem 1rem;">
+    <h1 class="hero-title" style="text-align: center; margin-bottom: 3rem; font-size: 3rem;">Privacy Policy</h1>
+
+    <div class="terms-content" style="display: flex; flex-direction: column; gap: 2rem;">
+        <section class="terms-section">
+            <h2 style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 1rem; border-bottom: 1px solid var(--accent-color, #eee); padding-bottom: 0.5rem;">1. Data We Collect</h2>
+            <p style="font-family: 'DM Sans', sans-serif; color: var(--text-muted, #666); font-size: 1.1rem;">To provide our services, we collect information you provide directly to us, including your email address during registration and the financial transactions you log (amounts, categories, and dates). We also collect basic technical data such as your IP address and browser type for security and optimization purposes.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2 style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 1rem; border-bottom: 1px solid var(--accent-color, #eee); padding-bottom: 0.5rem;">2. How We Use Your Data</h2>
+            <p style="font-family: 'DM Sans', sans-serif; color: var(--text-muted, #666); font-size: 1.1rem;">We use your data exclusively to operate and improve the Spendly application. This includes processing your expenses to generate spending reports, managing your account, and ensuring the security of our platform. We do not sell your personal or financial data to any third parties.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2 style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 1rem; border-bottom: 1px solid var(--accent-color, #eee); padding-bottom: 0.5rem;">3. Data Storage</h2>
+            <p style="font-family: 'DM Sans', sans-serif; color: var(--text-muted, #666); font-size: 1.1rem;">Your data is stored securely on our servers using industry-standard encryption. We retain your information for as long as your account is active or as needed to provide you with the service. You may request the deletion of your account and associated data at any time.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2 style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 1rem; border-bottom: 1px solid var(--accent-color, #eee); padding-bottom: 0.5rem;">4. Third Party Services</h2>
+            <p style="font-family: 'DM Sans', sans-serif; color: var(--text-muted, #666); font-size: 1.1rem;">We do not share your financial data with third-party services. Any third-party tools used for hosting or basic analytics are configured to protect your privacy and do not have access to your sensitive financial records.</p>
+        </section>
+
+        <section class="terms-section">
+            <h2 style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 1rem; border-bottom: 1px solid var(--accent-color, #eee); padding-bottom: 0.5rem;">5. Contact Us</h2>
+            <p style="font-family: 'DM Sans', sans-serif; color: var(--text-muted, #666); font-size: 1.1rem;">If you have any questions about this Privacy Policy or how your data is handled, please contact us at <a href="mailto:privacy@spendly.example" style="color: var(--accent-color, #000);">privacy@spendly.example</a>.</p>
+        </section>
+    </div>
+
+    <div class="terms-footer" style="margin-top: 4rem; text-align: center; border-top: 1px solid #eee; padding-top: 2rem;">
+        <p style="font-family: 'DM Sans', sans-serif; color: var(--text-muted, #999); font-size: 0.9rem;">Last updated: October 2026</p>
+    </div>
+</div>
+{% endblock %}
