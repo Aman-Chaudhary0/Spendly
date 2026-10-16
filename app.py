@@ -1,6 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, flash
+import sqlite3
+from werkzeug.security import generate_password_hash
+from database.db import create_user
 
 app = Flask(__name__)
+app.secret_key = 'spendly-dev-secret-key-123'
 
 
 # ------------------------------------------------------------------ #
@@ -12,8 +16,32 @@ def landing():
     return render_template("landing.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
+
+        if not all([name, email, password, confirm_password]):
+            flash("All fields are required", "error")
+            return render_template("register.html")
+
+        if password != confirm_password:
+            flash("Passwords do not match", "error")
+            return render_template("register.html")
+
+        hashed_password = generate_password_hash(password)
+
+        try:
+            create_user(name, email, hashed_password)
+            flash("Account created successfully! Please sign in.", "success")
+            return redirect(url_for("login"))
+        except sqlite3.IntegrityError:
+            flash("Email already registered", "error")
+            return render_template("register.html")
+
     return render_template("register.html")
 
 
