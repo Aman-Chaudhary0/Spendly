@@ -12,6 +12,21 @@ def get_db():
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
 
+def create_user(name, email, password):
+    """
+    Creates a new user in the database.
+    Returns the ID of the created user.
+    Raises sqlite3.IntegrityError if the email is already registered.
+    """
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+            (name, email, password)
+        )
+        conn.commit()
+        return cursor.lastrowid
+
 def init_db():
     """
     Initializes the database by creating the required tables.
