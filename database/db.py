@@ -27,6 +27,20 @@ def create_user(name, email, password):
         conn.commit()
         return cursor.lastrowid
 
+def get_user_by_email(email):
+    """
+    Retrieves a user from the database by their email.
+    Returns the user row as a tuple if found, otherwise None.
+    """
+    with get_db() as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT * FROM users WHERE email = ? LIMIT 1",
+            (email,)
+        )
+        return cursor.fetchone()
+
 def init_db():
     """
     Initializes the database by creating the required tables.
