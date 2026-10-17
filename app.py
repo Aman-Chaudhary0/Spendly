@@ -13,13 +13,15 @@ app.secret_key = 'spendly-dev-secret-key-123'
 
 @app.route("/")
 def landing():
+    if session.get("user_id"):
+        return redirect(url_for("profile"))
     return render_template("landing.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if session.get("user_id"):
-        return redirect(url_for("landing"))
+        return redirect(url_for("profile"))
 
     if request.method == "POST":
         name = request.form.get("name")
@@ -51,7 +53,7 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if session.get("user_id"):
-        return redirect(url_for("landing"))
+        return redirect(url_for("profile"))
 
     if request.method == "POST":
         email = request.form.get("email")
@@ -92,7 +94,41 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    user_id = session.get("user_id")
+    if not user_id:
+        flash("Please sign in to view your profile", "error")
+        return redirect(url_for("login"))
+
+    # Hardcoded data for UI design phase (Step 4)
+    user = {
+        "name": "Aman Chaudhary",
+        "email": "aman@example.com",
+        "member_since": "October 2023",
+        "initials": "AC"
+    }
+    stats = {
+        "total_spent": "₹12,450.00",
+        "transaction_count": 42,
+        "top_category": "Food & Dining"
+    }
+    transactions = [
+        {"date": "2023-10-15", "desc": "Grocery Store", "category": "Food", "amount": "₹1,200.00"},
+        {"date": "2023-10-14", "desc": "Uber Ride", "category": "Transport", "amount": "₹450.00"},
+        {"date": "2023-10-12", "desc": "Internet Bill", "category": "Bills", "amount": "₹999.00"},
+    ]
+    categories = [
+        {"name": "Food", "amount": "₹4,500.00", "percentage": 36},
+        {"name": "Transport", "amount": "₹2,100.00", "percentage": 17},
+        {"name": "Bills", "amount": "₹5,850.00", "percentage": 47},
+    ]
+
+    return render_template(
+        "profile.html",
+        user=user,
+        stats=stats,
+        transactions=transactions,
+        categories=categories
+    )
 
 
 @app.route("/expenses/add")
