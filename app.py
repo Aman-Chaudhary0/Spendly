@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.db import create_user, get_user_by_email
+from database.queries import get_user_by_id, get_summary_stats, get_recent_transactions, get_category_breakdown
 
 app = Flask(__name__)
 app.secret_key = 'spendly-dev-secret-key-123'
@@ -99,28 +100,32 @@ def profile():
         flash("Please sign in to view your profile", "error")
         return redirect(url_for("login"))
 
-    # Hardcoded data for UI design phase (Step 4)
+    # User Info
+    user_data = get_user_by_id(user_id)
+    if not user_data:
+        flash("User not found", "error")
+        return redirect(url_for("login"))
+
     user = {
-        "name": "Aman Chaudhary",
-        "email": "aman@example.com",
-        "member_since": "October 2023",
-        "initials": "AC"
+        "name": user_data["name"],
+        "email": user_data["email"],
+        "member_since": user_data["member_since"],
+        "initials": "".join([n[0].upper() for n in user_data["name"].split()])
     }
+
+    # Summary Stats
+    raw_stats = get_summary_stats(user_id)
     stats = {
-        "total_spent": "₹12,450.00",
-        "transaction_count": 42,
-        "top_category": "Food & Dining"
+        "total_spent": f"₹{raw_stats['total_spent']:,.2f}",
+        "transaction_count": raw_stats["transaction_count"],
+        "top_category": raw_stats["top_category"]
     }
-    transactions = [
-        {"date": "2023-10-15", "desc": "Grocery Store", "category": "Food", "amount": "₹1,200.00"},
-        {"date": "2023-10-14", "desc": "Uber Ride", "category": "Transport", "amount": "₹450.00"},
-        {"date": "2023-10-12", "desc": "Internet Bill", "category": "Bills", "amount": "₹999.00"},
-    ]
-    categories = [
-        {"name": "Food", "amount": "₹4,500.00", "percentage": 36},
-        {"name": "Transport", "amount": "₹2,100.00", "percentage": 17},
-        {"name": "Bills", "amount": "₹5,850.00", "percentage": 47},
-    ]
+
+    # Transactions
+    transactions = get_recent_transactions(user_id)
+
+    # Categories
+    categories = get_category_breakdown(user_id)
 
     return render_template(
         "profile.html",
